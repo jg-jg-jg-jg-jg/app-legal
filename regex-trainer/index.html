@@ -24,8 +24,17 @@
   var android = /Android/i.test(ua);
   var ios = /iPhone|iPad|iPod/i.test(ua) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  if (android && PLAY) location.replace(PLAY);
-  else if (ios && APP_STORE) location.replace(APP_STORE);
+  var target = android ? PLAY : ios ? APP_STORE : null;
+  if (target) {
+    // Straight on to the store, without showing this page first. Should the
+    // hand-over not happen (a QR reader's built-in browser that blocks it),
+    // the page with its badges appears after a moment instead.
+    document.documentElement.style.visibility = 'hidden';
+    setTimeout(function () {
+      document.documentElement.style.visibility = '';
+    }, 2500);
+    location.replace(target);
+  }
 </script>
 </head>
 <body>
