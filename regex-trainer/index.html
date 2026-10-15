@@ -6,35 +6,13 @@
 <title>Regex Trainer: Daily Drills</title>
 <meta name="description" content="Practise regular expressions against the real engine of your programming language.">
 <link rel="stylesheet" href="../style.css">
-<style>
-  .badges { display: flex; flex-wrap: wrap; gap: 12px; margin: 1.5rem 0; }
-  .badges a { display: block; line-height: 0; }
-  .badges img { height: 56px; width: auto; }
-  .note { color: var(--muted); }
-  [hidden] { display: none !important; }
-</style>
+<link rel="stylesheet" href="../store-link.css">
+<script src="../store-link.js"></script>
 <script>
-  // The one link on every share image and in every share message. It sends
-  // each phone to its own store, so an image shared today still works for
-  // iPhones once the iOS app is out. When it is: put its App Store link here.
-  var PLAY = 'https://play.google.com/store/apps/details?id=com.regextrainer.dailydrills';
-  var APP_STORE = null; // e.g. 'https://apps.apple.com/app/id1234567890'
-
-  var ua = navigator.userAgent;
-  var android = /Android/i.test(ua);
-  var ios = /iPhone|iPad|iPod/i.test(ua) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  var target = android ? PLAY : ios ? APP_STORE : null;
-  if (target) {
-    // Straight on to the store, without showing this page first. Should the
-    // hand-over not happen (a QR reader's built-in browser that blocks it),
-    // the page with its badges appears after a moment instead.
-    document.documentElement.style.visibility = 'hidden';
-    setTimeout(function () {
-      document.documentElement.style.visibility = '';
-    }, 2500);
-    location.replace(target);
-  }
+  goToStore({
+    play: 'https://play.google.com/store/apps/details?id=com.regextrainer.dailydrills',
+    appStore: null, // once live, e.g. 'https://apps.apple.com/app/id1234567890'
+  });
 </script>
 </head>
 <body>
@@ -46,8 +24,8 @@ language. Free to start.</p>
 Programmiersprache. Kostenlos starten.</p>
 
 <div class="badges">
-  <a id="app-store" href="#" hidden><img id="app-store-badge" src="../badges/app-store-en.svg" alt="Download on the App Store"></a>
-  <a id="google-play" href="https://play.google.com/store/apps/details?id=com.regextrainer.dailydrills"><img id="google-play-badge" src="../badges/google-play-en.svg" alt="Get it on Google Play"></a>
+  <a id="app-store" hidden><img alt="Download on the App Store"></a>
+  <a id="google-play" href="https://play.google.com/store/apps/details?id=com.regextrainer.dailydrills"><img src="../badges/google-play-en.svg" alt="Get it on Google Play"></a>
 </div>
 
 <p id="ios-soon" class="note" hidden>Coming soon for iPhone and iPad. ·
@@ -60,22 +38,5 @@ Bald auch für iPhone und iPad.</p>
 <p class="note">Google Play and the Google Play logo are trademarks of Google LLC.
 Apple, the Apple logo and App Store are trademarks of Apple Inc.</p>
 </main>
-<script>
-  // German badges for German browsers, English otherwise.
-  if (/^de\b/i.test(navigator.language || '')) {
-    document.getElementById('app-store-badge').src = '../badges/app-store-de.svg';
-    document.getElementById('google-play-badge').src = '../badges/google-play-de.svg';
-    document.getElementById('app-store-badge').alt = 'Laden im App Store';
-    document.getElementById('google-play-badge').alt = 'Jetzt bei Google Play';
-  }
-  // The App Store badge only once the app is there - and then first.
-  if (APP_STORE) {
-    var a = document.getElementById('app-store');
-    a.href = APP_STORE;
-    a.hidden = false;
-  } else if (ios) {
-    document.getElementById('ios-soon').hidden = false;
-  }
-</script>
 </body>
 </html>
