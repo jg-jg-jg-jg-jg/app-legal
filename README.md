@@ -12,6 +12,10 @@ Impressum und Datenschutzerklärungen für die Apps von Johannes Groß
 - Regex Trainer: Daily Drills – store link (sends Android to Google Play,
   iPhone to the App Store once it is there; used by the QR code and links on
   the app's share images): https://apps.afflatus.company/regex-trainer/
+- SQL Trainer: Daily Drills – privacy policy / Datenschutzerklärung:
+  https://apps.afflatus.company/sql-trainer/datenschutz/
+- SQL Trainer: Daily Drills – store link (same behaviour):
+  https://apps.afflatus.company/sql-trainer/
 
 The `badges/` folder holds the official Google Play and App Store badges
 (English, German) for that page, unmodified, from the private brand-assets
