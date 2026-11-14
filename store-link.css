@@ -1,0 +1,5 @@
+.badges { display: flex; flex-wrap: wrap; gap: 12px; margin: 1.5rem 0; }
+.badges a { display: block; line-height: 0; }
+.badges img { height: 56px; width: auto; }
+.note { color: var(--muted); }
+[hidden] { display: none !important; }

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hang Tough: Hangboard Timer</title>
+<meta name="description" content="The hangboard timer for climbers: repeaters, max hangs, max-time test, beeps and voice.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../store-link.css">
+<style>
+  .head { display: flex; gap: 14px; align-items: center; margin-bottom: 1rem; }
+  .head img { width: 64px; height: 64px; border-radius: 14px; }
+  .head h1 { margin: 0; }
+  .workout { border: 1px solid var(--rule); border-radius: 14px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+  .workout h2 { margin: 0 0 0.5rem; }
+  .workout p { margin: 0.2rem 0; }
+  .open { display: inline-block; margin-top: 0.75rem; padding: 0.8rem 1.4rem; border-radius: 12px;
+          background: #FF7A1A; color: #fff; font-weight: 700; text-decoration: none; }
+</style>
+<script src="../store-link.js"></script>
+<script>
+  // A shared workout travels after the "#" (the server never sees it): then
+  // stay on this page and offer to open it in the app.
+  var shared = /HBT1:[A-Za-z0-9_-]{8,}/.exec(decodeURIComponent(location.hash || ''));
+  goToStore({
+    play: 'https://play.google.com/store/apps/details?id=com.hangboardtimer.fingerboard',
+    appStore: null, // once live, e.g. 'https://apps.apple.com/app/id1234567890'
+    stay: !!shared,
+  });
+</script>
+</head>
+<body>
+<main>
+<div class="head">
+  <img src="icon.png" alt="">
+  <h1>Hang Tough: Hangboard Timer</h1>
+</div>
+<p>Get a grip on your climbing training: 7/3 repeaters, max hangs and a
+max-time test, with 3-2-1 beeps and a voice for every set – over your
+music.</p>
+<p class="lang">Hab dein Klettertraining voll im Griff: 7/3-Repeaters, Max
+Hangs und ein Max-Zeit-Test, mit 3-2-1-Tönen und Ansagen für jeden Satz –
+über deiner Musik.</p>
+
+<div class="workout" id="workout" hidden>
+  <h2 id="workout-name">Shared workout</h2>
+  <div id="workout-lines"></div>
+  <a class="open" id="open">Open in Hang Tough</a>
+</div>
+
+<div class="badges">
+  <a id="app-store" hidden><img alt="Download on the App Store"></a>
+  <a id="google-play" href="https://play.google.com/store/apps/details?id=com.hangboardtimer.fingerboard"><img src="../badges/google-play-en.svg" alt="Get it on Google Play"></a>
+</div>
+
+<p id="ios-soon" class="note" hidden>Coming soon for iPhone. · Bald auch für
+das iPhone.</p>
+
+<p class="note">
+  <a href="datenschutz/">Privacy policy / Datenschutz</a> ·
+  <a href="../impressum/">Legal notice / Impressum</a>
+</p>
+<p class="note">Google Play and the Google Play logo are trademarks of Google LLC.
+Apple, the Apple logo and App Store are trademarks of Apple Inc.</p>
+</main>
+<script>
+  if (shared) {
+    if (/^de\b/i.test(navigator.language || '')) {
+      document.getElementById('workout-name').textContent = 'Geteiltes Workout';
+      document.getElementById('open').textContent = 'In Hang Tough öffnen';
+    }
+    document.getElementById('workout').hidden = false;
+    document.getElementById('open').href = 'hangboardtimer://import#' + shared[0];
+    describe(shared[0].slice(5)).catch(function () {});
+  }
+  // The workout's name and blocks, decoded like the app does (raw deflate).
+  async function describe(b64) {
+    if (!('DecompressionStream' in window)) return;
+    var s = b64.replace(/-/g, '+').replace(/_/g, '/');
+    var bin = atob(s + '='.repeat((4 - s.length % 4) % 4));
+    var bytes = Uint8Array.from(bin, function (c) { return c.charCodeAt(0); });
+    var stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    var w = JSON.parse(await new Response(stream).text());
+    if (w.name) document.getElementById('workout-name').textContent = w.name;
+    var lines = document.getElementById('workout-lines');
+    (w.blocks || []).slice(0, 8).forEach(function (b) {
+      var p = document.createElement('p');
+      p.textContent = b.reps > 1
+        ? b.sets + ' × ' + b.reps + ' × ' + b.hang + '/' + b.rest + ' s'
+        : b.sets + ' × ' + b.hang + ' s';
+      lines.appendChild(p);
+    });
+  }
+</script>
+</body>
+</html>
