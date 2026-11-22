@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.hangboardtimer.fingerboard",
+      "sha256_cert_fingerprints": [
+        "C6:B2:F0:7B:A1:FD:D4:BC:71:10:94:F5:62:55:2D:80:57:FB:37:ED:25:B9:53:D8:7F:5F:59:16:38:FD:40:7B",
+        "D4:72:0D:A2:26:98:28:2E:12:02:30:72:62:B8:DF:15:5B:BC:21:F7:08:9F:EA:C0:DD:98:D1:B0:37:B1:60:68"
+      ]
+    }
+  }
+]
